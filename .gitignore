@@ -1,0 +1,8 @@
+# IDE generated files
+.idea/
+
+# dependencies are stored in the vendor directory
+vendor/
+
+# locally compiled pokecli binary
+bin/pokecli
