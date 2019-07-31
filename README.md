@@ -14,12 +14,7 @@ $ make
 ```
 Then run:
 ```console
-$ ./bin/pokecli
-```
-
-Add it to your path:
-```console
-$ export PATH=$PATH:$(pwd)/bin
+$ pokecli
 ```
 
 ## Usage
@@ -49,7 +44,7 @@ Use "pokecli [command] --help" for more information about a command.
 ## Operations
 
 ### search - Search for entities
-Search takes a type `(-t)` and one or more search strings, and prints a list of 
+Search takes a type `(-t)` and one or more search strings, and prints a list of
 matching entities.
 
 <details> <summary>Examples</summary>
@@ -90,7 +85,7 @@ solgaleo
 </details>
 
 ### show - Show an Entity
-Show takes a type `(-t)` and a single name or ID number, and prints a simple 
+Show takes a type `(-t)` and a single name or ID number, and prints a simple
 summary of the entity.
 
 <details> <summary>Examples</summary>
@@ -113,8 +108,8 @@ voltorb (#100) [electric]
 </details>
 
 ### effect - Check the Type Effectiveness of a Move
-Effect takes a pokemon `(-p)` and a move `(-m)`, and prints a message about the 
-effectiveness of that move's type on the defending pokemon.  If the move is 
+Effect takes a pokemon `(-p)` and a move `(-m)`, and prints a message about the
+effectiveness of that move's type on the defending pokemon.  If the move is
 non-damaging it will return that information instead.
 
 <details> <summary>Examples</summary>
