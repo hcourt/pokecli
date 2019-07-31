@@ -89,7 +89,7 @@ func effect(cmd *cobra.Command, _ []string) error {
 	if logVerbose {
 		printEffect(&moveType, pokeTypes, &result)
 	} else {
-		fmt.Println(&result)
+		fmt.Printf("%v", &result)
 	}
 	return nil
 }

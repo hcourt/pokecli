@@ -110,44 +110,45 @@ voltorb (#100) [electric]
 ### effect - Check the Type Effectiveness of a Move
 Effect takes a pokemon `(-p)` and a move `(-m)`, and prints a message about the
 effectiveness of that move's type on the defending pokemon.  If the move is
-non-damaging it will return that information instead.
+non-damaging it will return that information instead.  Use `(-v)` to get a more 
+detailed answer.
 
 <details> <summary>Examples</summary>
 
 
 ```console
-$ pokecli effect -m rock-slide -p charizard
+$ pokecli effect -v -m rock-slide -p charizard
 If a rock move attacks a [flying fire] pokemon, the damage is double super effective.
 ```
 
 ```console
-$ pokecli effect -m flamethrower -p bulbasaur
+$ pokecli effect -v -m flamethrower -p bulbasaur
 If a fire move attacks a [poison grass] pokemon, the damage is super effective.
 ```
 
 ```console
-$ pokecli effect -m shadow-ball -p beedrill
+$ pokecli effect -v -m shadow-ball -p beedrill
   If a ghost move attacks a [poison bug] pokemon, the damage is effective.
 ```
 
 ```console
-$ pokecli effect -m body-slam -p steelix
+$ pokecli effect -v -m body-slam -p steelix
 If a normal move attacks a [ground steel] pokemon, the damage is not very effective (50%).
 ```
 
 ```console
-$ pokecli effect -m solar-beam -p dialga
+$ pokecli effect -v -m solar-beam -p dialga
 If a grass move attacks a [dragon steel] pokemon, the damage is not very effective (25%).
 ```
 
 ```console
-$ pokecli effect -m thunder -p geodude
+$ pokecli effect -v -m thunder -p geodude
 If a electric move attacks a [ground rock] pokemon, the damage is not effective.
 ```
 
 Non-damaging moves:
 ```console
-$ pokecli effect -m hypnosis -p snorlax
+$ pokecli effect -v -m hypnosis -p snorlax
 Move is a status move and will not cause typed damage.
 ```
 
