@@ -28,7 +28,7 @@ type damageRelations struct {
 }
 
 func typeBuilder(name string, damage damageRelations) *SimpleType {
-	t := TypeFromName(name)
+	t := SimpleType{Name: name}
 	t.DamageRelations = damage
 	return &t
 }
@@ -36,13 +36,13 @@ func typeBuilder(name string, damage damageRelations) *SimpleType {
 func TestSimpleType_Effect(t *testing.T) {
 	tests := []struct {
 		name       string
-		moveType   SimpleType
+		moveType   *SimpleType
 		defendType *SimpleType
 		expected   DamageEffect
 	}{
 		{
 			name:     "no effect",
-			moveType: TypeFromName("electric"),
+			moveType: typeBuilder("electric", damageRelations{}),
 			defendType: typeBuilder("ground", damageRelations{
 				NoDamageFrom: []struct {
 					Name string `json:"name"`
@@ -53,7 +53,7 @@ func TestSimpleType_Effect(t *testing.T) {
 		},
 		{
 			name:     "half effect",
-			moveType: TypeFromName("fire"),
+			moveType: typeBuilder("fire", damageRelations{}),
 			defendType: typeBuilder("water", damageRelations{
 				HalfDamageFrom: []interface{}{
 					map[string]interface{}{
@@ -65,13 +65,13 @@ func TestSimpleType_Effect(t *testing.T) {
 		},
 		{
 			name:       "normal effect",
-			moveType:   TypeFromName("normal"),
+			moveType:   typeBuilder("normal", damageRelations{}),
 			defendType: typeBuilder("dark", damageRelations{}),
 			expected:   NormalDamage,
 		},
 		{
 			name:     "double effect",
-			moveType: TypeFromName("rock"),
+			moveType: typeBuilder("rock", damageRelations{}),
 			defendType: typeBuilder("flying", damageRelations{
 				DoubleDamageFrom: []struct {
 					Name string `json:"name"`
@@ -91,13 +91,13 @@ func TestSimpleType_Effect(t *testing.T) {
 func TestSimpleType_EffectMulti(t *testing.T) {
 	tests := []struct {
 		name        string
-		moveType    SimpleType
+		moveType    *SimpleType
 		defendTypes []*SimpleType
 		expected    DamageEffect
 	}{
 		{
 			name:     "quarter effect",
-			moveType: TypeFromName("grass"),
+			moveType: typeBuilder("grass", damageRelations{}),
 			defendTypes: []*SimpleType{
 				typeBuilder("dragon", damageRelations{
 					HalfDamageFrom: []interface{}{
@@ -118,7 +118,7 @@ func TestSimpleType_EffectMulti(t *testing.T) {
 		},
 		{
 			name:     "quadruple effect",
-			moveType: TypeFromName("rock"),
+			moveType: typeBuilder("rock", damageRelations{}),
 			defendTypes: []*SimpleType{
 				typeBuilder("flying", damageRelations{
 					DoubleDamageFrom: []struct {

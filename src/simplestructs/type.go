@@ -15,9 +15,11 @@ const (
 	QuadDamage    = DamageEffect(4.00)
 )
 
+// DamageEffect is a multiplier for one type's damage against another type
+type DamageEffect float32
+
 // SimpleType is a wrapper around a Type which simplifies functionality
 type SimpleType structs.Type
-type DamageEffect float32
 
 func (d DamageEffect) String() string {
 	switch d {
@@ -38,14 +40,12 @@ func (d DamageEffect) String() string {
 	}
 }
 
-func TypeFromName(name string) SimpleType {
-	return SimpleType{Name: name}
-}
-
 func (s *SimpleType) String() string {
 	return s.Name
 }
 
+// Effect calculates the DamageEffect multiplier that this type produces against
+// the defending type.
 func (s *SimpleType) Effect(defendType *SimpleType) DamageEffect {
 	defender := defendType.DamageRelations
 	for _, t := range defender.NoDamageFrom {
@@ -68,6 +68,8 @@ func (s *SimpleType) Effect(defendType *SimpleType) DamageEffect {
 	return NormalDamage
 }
 
+// EffectMulti calculates the DamageEffect multiplier that this type produces
+// against a set of defending types.
 func (s *SimpleType) EffectMulti(defendTypes []*SimpleType) DamageEffect {
 	result := NormalDamage
 	for _, defendType := range defendTypes {
@@ -75,4 +77,3 @@ func (s *SimpleType) EffectMulti(defendTypes []*SimpleType) DamageEffect {
 	}
 	return result
 }
-

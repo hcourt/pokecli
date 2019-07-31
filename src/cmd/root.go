@@ -4,10 +4,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// TODO: use zap logging
 var logVerbose bool
 
 var rootCmd = &cobra.Command{
-	Use: "pokecli",
+	Use:   "pokecli",
 	Short: "pokecli is a command line interface (CLI) for PokéAPI",
 	Long: `A simple command line interface wrapper for PokéAPI written by
                 hcourt in Go using pokeapi-go.

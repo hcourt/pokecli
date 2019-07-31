@@ -56,6 +56,8 @@ func init() {
 	rootCmd.AddCommand(cmd)
 }
 
+// effect calculates the damage multiplier of one move against a defending
+// pokemon, and prints a summary message.
 func effect(cmd *cobra.Command, _ []string) error {
 	move, err := pokeapi.Move(rootFlags.moveName)
 	if err != nil {
@@ -72,7 +74,7 @@ func effect(cmd *cobra.Command, _ []string) error {
 		return err
 	}
 
-	moveType := simplestructs.TypeFromName(move.Type.Name)
+	moveType := simplestructs.SimpleType{Name: move.Type.Name}
 	var pokeTypes []*simplestructs.SimpleType
 	for _, t := range poke.Types {
 		pokeType, err := pokeapi.Type(t.Type.Name)
@@ -84,6 +86,10 @@ func effect(cmd *cobra.Command, _ []string) error {
 	}
 
 	result := moveType.EffectMulti(pokeTypes)
-	printEffect(&moveType, pokeTypes, &result)
+	if logVerbose {
+		printEffect(&moveType, pokeTypes, &result)
+	} else {
+		fmt.Println(&result)
+	}
 	return nil
 }
