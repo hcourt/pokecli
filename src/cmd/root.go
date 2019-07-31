@@ -14,6 +14,13 @@ var rootCmd = &cobra.Command{
                 Complete documentation is available at https://pokeapi.co`,
 }
 
+type allFlags struct {
+	*searchFlags
+	*showFlags
+}
+
+var rootFlags = &allFlags{}
+
 // Execute runs the cli tool
 func Execute() error {
 	return rootCmd.Execute()

@@ -11,40 +11,22 @@ import (
 )
 
 type searchFlags struct {
-	entityType string
+	entityFlags
 }
 
-var (
-	supportedTypes = []string{
-		"pokemon",
-		"move",
-	}
-	flags *searchFlags
-)
-
 func init() {
-	flags = &searchFlags{}
-	var cmd = &cobra.Command{
+	flags := &searchFlags{}
+	cmd := &cobra.Command{
 		Use:   "search",
-		Short: "Show information about an entity",
+		Short: "Search for entities by type and name",
 		RunE:  search,
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.MinimumNArgs(1),
 	}
 	if err := flags.addToCmd(cmd); err != nil {
 		log.Fatal(err)
 	}
+	rootFlags.searchFlags = flags
 	rootCmd.AddCommand(cmd)
-}
-
-func (f *searchFlags) addToCmd(cmd *cobra.Command) error {
-	const typeFlag = "type"
-	cmd.Flags().StringVarP(
-		&f.entityType,
-		typeFlag,
-		"t",
-		supportedTypes[0],
-		fmt.Sprintf("The type of entity to search for.  Supported types: %s", supportedTypes))
-	return cmd.MarkFlagRequired(typeFlag)
 }
 
 // search is a dictionary search for one or more entities by type and name.
@@ -54,13 +36,13 @@ func search(cmd *cobra.Command, entities []string) error {
 	var errs error
 	var results []structs.Result
 	for _, entity := range entities {
-		found, err := pokeapi.Search(flags.entityType, entity)
+		found, err := pokeapi.Search(rootFlags.searchFlags.entityType, entity)
 		if err != nil {
 			// Fail quickly for I/O errors
 			return err
 		}
 		if found.Count == 0 {
-			errs = multierr.Append(errs, fmt.Errorf("entity not found: %s (type %s)", entity, flags.entityType))
+			errs = multierr.Append(errs, fmt.Errorf("entity not found: %s (type %s)", entity, rootFlags.searchFlags.entityType))
 		}
 		results = append(results, found.Results...)
 	}
