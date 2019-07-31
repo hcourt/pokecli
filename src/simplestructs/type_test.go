@@ -27,17 +27,17 @@ type damageRelations struct {
 	} `json:"no_damage_to"`
 }
 
-func typeBuilder(name string, damage damageRelations) SimpleType {
+func typeBuilder(name string, damage damageRelations) *SimpleType {
 	t := TypeFromName(name)
 	t.DamageRelations = damage
-	return t
+	return &t
 }
 
 func TestSimpleType_Effect(t *testing.T) {
 	tests := []struct {
 		name       string
 		moveType   SimpleType
-		defendType SimpleType
+		defendType *SimpleType
 		expected   DamageEffect
 	}{
 		{
@@ -82,7 +82,63 @@ func TestSimpleType_Effect(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(tt *testing.T) {
-			result := test.moveType.Effect(&test.defendType)
+			result := test.moveType.Effect(test.defendType)
+			assert.Equal(tt, test.expected, result)
+		})
+	}
+}
+
+func TestSimpleType_EffectMulti(t *testing.T) {
+	tests := []struct {
+		name        string
+		moveType    SimpleType
+		defendTypes []*SimpleType
+		expected    DamageEffect
+	}{
+		{
+			name:     "quarter effect",
+			moveType: TypeFromName("grass"),
+			defendTypes: []*SimpleType{
+				typeBuilder("dragon", damageRelations{
+					HalfDamageFrom: []interface{}{
+						map[string]interface{}{
+							"name": "grass",
+						},
+					},
+				}),
+				typeBuilder("steel", damageRelations{
+					HalfDamageFrom: []interface{}{
+						map[string]interface{}{
+							"name": "grass",
+						},
+					},
+				}),
+			},
+			expected: QuarterDamage,
+		},
+		{
+			name:     "quadruple effect",
+			moveType: TypeFromName("rock"),
+			defendTypes: []*SimpleType{
+				typeBuilder("flying", damageRelations{
+					DoubleDamageFrom: []struct {
+						Name string `json:"name"`
+						URL  string `json:"url"`
+					}{{Name: "rock"}},
+				}),
+				typeBuilder("fire", damageRelations{
+					DoubleDamageFrom: []struct {
+						Name string `json:"name"`
+						URL  string `json:"url"`
+					}{{Name: "rock"}},
+				}),
+			},
+			expected: QuadDamage,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(tt *testing.T) {
+			result := test.moveType.EffectMulti(test.defendTypes)
 			assert.Equal(tt, test.expected, result)
 		})
 	}
