@@ -17,6 +17,7 @@ var rootCmd = &cobra.Command{
 type allFlags struct {
 	*searchFlags
 	*showFlags
+	*effectFlags
 }
 
 var rootFlags = &allFlags{}

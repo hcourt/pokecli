@@ -48,8 +48,9 @@ Use "pokecli [command] --help" for more information about a command.
 
 ## Operations
 
-### Search for entities
-Search takes a type `(-t)` and one or more search strings.
+### search - Search for entities
+Search takes a type `(-t)` and one or more search strings, and prints a list of 
+matching entities.
 
 <details> <summary>Examples</summary>
 
@@ -75,7 +76,7 @@ thunder-fang
 With multiple search strings:
 
 ```console
-pokecli search -t pokemon foo leo
+$ pokecli search -t pokemon foo leo
 foongus
 mienfoo
 charmeleon
@@ -88,8 +89,9 @@ solgaleo
 
 </details>
 
-### Show
-Show takes a type `(-t)` and a single name or ID number.
+### show - Show an Entity
+Show takes a type `(-t)` and a single name or ID number, and prints a simple 
+summary of the entity.
 
 <details> <summary>Examples</summary>
 
@@ -108,4 +110,50 @@ Using an ID number:
 $ pokecli show -t pokemon 100
 voltorb (#100) [electric]
 ```
+</details>
+
+### effect - Check the Type Effectiveness of a Move
+Effect takes a pokemon `(-p)` and a move `(-m)`, and prints a message about the 
+effectiveness of that move's type on the defending pokemon.  If the move is 
+non-damaging it will return that information instead.
+
+<details> <summary>Examples</summary>
+
+
+```console
+$ pokecli effect -m rock-slide -p charizard
+If a rock move attacks a [flying fire] pokemon, the damage is double super effective.
+```
+
+```console
+$ pokecli effect -m flamethrower -p bulbasaur
+If a fire move attacks a [poison grass] pokemon, the damage is super effective.
+```
+
+```console
+$ pokecli effect -m shadow-ball -p beedrill
+  If a ghost move attacks a [poison bug] pokemon, the damage is effective.
+```
+
+```console
+$ pokecli effect -m body-slam -p steelix
+If a normal move attacks a [ground steel] pokemon, the damage is not very effective (50%).
+```
+
+```console
+$ pokecli effect -m solar-beam -p dialga
+If a grass move attacks a [dragon steel] pokemon, the damage is not very effective (25%).
+```
+
+```console
+$ pokecli effect -m thunder -p geodude
+If a electric move attacks a [ground rock] pokemon, the damage is not effective.
+```
+
+Non-damaging moves:
+```console
+$ pokecli effect -m hypnosis -p snorlax
+Move is a status move and will not cause typed damage.
+```
+
 </details>
